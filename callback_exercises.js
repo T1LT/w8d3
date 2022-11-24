@@ -127,10 +127,10 @@ function absurdBubbleSort(arr, sortCompletionCallback) {
 }
 
 // innerBubbleSortLoop([2, 3, 1, 5, 4, 6], 1, false, () => { console.log("in outer bubble sort") })
-absurdBubbleSort([3, 2, 1], function (arr) {
-  console.log("Sorted array: " + JSON.stringify(arr));
-  reader.close();
-});
+// absurdBubbleSort([3, 2, 1], function (arr) {
+//   console.log("Sorted array: " + JSON.stringify(arr));
+//   reader.close();
+// });
 
 // reader.question('What do you think of JavaScript? ', answer => {
 //   console.log(`Thank you for your valuable feedback: ${answer}`);
@@ -139,3 +139,47 @@ absurdBubbleSort([3, 2, 1], function (arr) {
 //       reader.close();
 //   });
 // });
+
+
+Function.prototype.myThrottle = function(interval) {
+  let tooSoon = false;
+  console.log(this)
+  return function() {
+    if (!tooSoon) {
+      tooSoon = true;
+      setTimeout(()=>{
+        tooSoon = false;
+        this()
+      }, interval)
+    }
+  }
+}
+
+class Neuron {
+  fire() {
+    console.log("Firing!");
+  }
+}
+
+const neuron = new Neuron();
+// When we create a new Neuron,
+// we can call #fire as frequently as we want
+
+// The following code will try to #fire the neuron every 10ms. Try it in the console:
+// const interval = setInterval(() => {
+//   neuron.fire();
+// }, 1000);
+
+// You can use clearInterval to stop the firing:
+// clearInterval(interval);
+
+
+// Using Function#myThrottle, we should be able to throttle
+// the #fire function of our neuron so that it can only fire
+// once every 500ms:
+
+neuron.fire = neuron.fire.myThrottle(500);
+
+const interval = setInterval(() => {
+  neuron.fire();
+}, 10);
